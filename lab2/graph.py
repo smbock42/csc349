@@ -10,7 +10,6 @@ class Vertex:
         self.out_edges = [] #TODO: add out edges
         self.previsit = None #TODO: Add pre/post visit numbers
         self.postvisit = None #TODO: Add pre/post visit numbers
-        self.color = None #TODO: delete? 
         self.component = None #TODO: not sure what component is? 
 
 
@@ -38,9 +37,9 @@ class Graph:
                     self.add_edge(v1,v2)
         file.close()
     
-    def __iter__(self):
-        for vertex in self.get_vertices():
-            yield vertex
+    # def __iter__(self):
+    #     for vertex in self.get_vertices():
+    #         yield vertex
 
 
     def add_vertex(self, key):

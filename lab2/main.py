@@ -1,8 +1,8 @@
 from graph import Graph
 def main():
     g = Graph("lab2_example.txt")
-    for node in g:
-        print(node)
+    
+    return(g.conn_components())
 
 
 if __name__== "__main__":
