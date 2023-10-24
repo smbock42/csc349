@@ -25,28 +25,43 @@ class Graph:
         # This method should call add_vertex and add_edge!!!
         file = open(filename)
         self.dictionary = {}
-        for line in file:
-            split = line.split()
-            if len(split) != 0:
-                self.add_vertex(split[0])
-                self.add_vertex(split[1])
-                self.add_edge(split[0],split[1])
+        for line_number, line in enumerate(file):
+            if line_number == 0:
+                num_nodes = line.split()[0]
+            else:
+
+                split = line.split(", ")
+                v1, v2 = (int(split[0]), int(split[1]))
+                if len(split) != 0:
+                    self.add_vertex(v1)
+                    self.add_vertex(v2)
+                    self.add_edge(v1,v2)
         file.close()
-        
+    
+    def __iter__(self):
+        for vertex in self.get_vertices():
+            yield vertex
+
 
     def add_vertex(self, key):
         # Should be called by init
         '''Add vertex to graph only if the vertex is not already in the graph.'''
         if key not in self.dictionary:
             self.dictionary[key] = Vertex(key)
+            return f"Added Vertex: {key}"
+        return f"Vertex: {key} Already In Graph"
+        
 
     def add_edge(self, v1, v2):
         # Should be called by init
         '''v1 and v2 are vertex ID's. As this is an undirected graph, add an 
            edge from v1 to v2 and an edge from v2 to v1.  You can assume that
            v1 and v2 are already in the graph'''
-        self.dictionary[v1].adjacent_to.append(v2)
-        self.dictionary[v2].adjacent_to.append(v1)
+        self.dictionary[v1].out_edges.append(v2)
+        self.dictionary[v2].in_edges.append(v1)
+        return f"Added Edge ({v1}, {v2})"
+
+
 
     def get_vertex(self, key):
         '''Return the Vertex object associated with the ID. If ID is not in the graph, return None'''
