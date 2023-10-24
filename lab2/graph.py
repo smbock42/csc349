@@ -28,9 +28,9 @@ class Graph:
             if line_number == 0:
                 num_nodes = line.split()[0]
             else:
-
+                line = line.replace("\n","")
                 split = line.split(", ")
-                v1, v2 = (int(split[0]), int(split[1]))
+                v1, v2 = (split[0], split[1])
                 if len(split) != 0:
                     self.add_vertex(v1)
                     self.add_vertex(v2)
@@ -90,7 +90,7 @@ class Graph:
             while not stack.is_empty():
                 push = False
                 currentvertex = stack.peek()
-                for adjacent in self.get_vertex(currentvertex).adjacent_to: #iterate through adjacency list
+                for adjacent in sorted(self.get_vertex(currentvertex).out_edges): #iterate through adjacency list
                     if adjacent not in visited:
                         stack.push(adjacent)
                         push = True
