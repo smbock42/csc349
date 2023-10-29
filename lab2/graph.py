@@ -71,6 +71,10 @@ class Graph:
     def get_vertices(self):
         '''Returns a list of ID's representing the vertices in the graph, in ascending order'''
         return sorted(self.dictionary.keys())
+    
+    def transpose(self):
+        for vertex in self.get_vertices():
+            
 
     def conn_components(self): 
         '''Return a Python list of lists.  For example: if there are three connected components 
