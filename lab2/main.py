@@ -1,8 +1,11 @@
-from graph import Graph
+from sabock_lab2 import Graph
+import sys
 def main():
-    g = Graph("lab2_example.txt")
+    filename = sys.argv[1]
+    g = Graph()
+    g.read_file(filename)
     
-    return(g.conn_components())
+    return(g.strong_connectivity())
 
 
 if __name__== "__main__":
