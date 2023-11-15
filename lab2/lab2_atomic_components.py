@@ -2,6 +2,7 @@
 # Reads a file with a list of edges, then creates one component for each node and outputs it to the screen
 # Credit: Rodrigo Canaan 
 
+
 import sys
 import math
 
