@@ -24,25 +24,27 @@ def main():
 # 1,2,2,3,3,4,4 -mid = 3 -1
 # 1,2,2,3,3,4,4,5,5
 # 1,2,2,3,3,
-def recurse(arr):
+def recurse(arr, start=0, end=None):
+    if end is None:
+        end = len(arr)
     
-    if len(arr) == 1:
-        return arr[0]
+    if end - start == 1:
+        return arr[start]
 
-    mid = len(arr)//2
-    #check if mid is even
-    if mid %2 != 0:
-        #if odd, make mid even
+    mid = start + (end - start) // 2
+    # check if mid is even
+    if mid % 2 != 0:
+        # if odd, make mid even
         mid -= 1
     mid_value = arr[mid]
-    prev_value = arr[mid-1]
-    next_value = arr[mid+1]
+    prev_value = arr[mid - 1]
+    next_value = arr[mid + 1]
     if mid_value != prev_value and mid_value != next_value:
         return mid_value
     if mid_value == next_value:
-        return recurse(arr[mid+2:])
+        return recurse(arr, mid + 2, end)
     else:
-        return recurse(arr[:mid-1])
+        return recurse(arr, start, mid - 1)
 
 
     
