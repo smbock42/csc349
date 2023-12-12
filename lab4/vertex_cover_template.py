@@ -109,26 +109,37 @@ def print_cover(cover):
 # Generates all subsets of the nodes in a graph, then checks if they are valid vertex covers, then finally return the valid one with fewest elemnts
 # I recommend creating a helper method to check if a subset is a vertex cover (see below)
 def bruteforce(G):
+	vertex_cover = None
 	P = powerset(G.V) 
 	for subset in P: 
-		print_subset(subset) # Make sure you comment out or delete this line for the final submission!
-		pass
-	return G.V # This is the maximal vertex cover provided as an incorrect example. You want the true minimum cover instead!
+		if is_vertex_cover(G, subset):
+			if vertex_cover is None or len(subset) < len(vertex_cover):
+				vertex_cover = subset
+
+	return vertex_cover # This is the maximal vertex cover provided as an incorrect example. You want the true minimum cover instead!
 
 
 # Optional (recommended) method to check if a subset is a vertex cover.
 # In a vertex cover, for every vertex v, either v is in the cover, or all its neighbors are
-def is_vertex_cover(subset):
-	pass
+def is_vertex_cover(G, subset):
+	if len(subset) == 0:
+		return False
+	for vertex in G.V:
+		if vertex not in subset and any(neighbor not in subset for neighbor in G.E[vertex]):
+			return False
+	return True
 
 # Method stub for the greedy algorithm
 # Returns a log(n)-approximation of the the minimal vertex cover
 # Correct behavior: while there are any **edges***, find the vertex with max degree, add it to the cover and remove it from the graph (along with all its edges)
 # Method stub incorrect behavior: adds all vertices to the cover and removes it from the graph 
-def greedy(G):	
+def greedy(G: graph):	
 	C = set() # Add nodes of maximum degree here
+	# check if there are any edges for while loop. remove_vertex doesn't remove edge, but removes the vertices in it. It will be {} when empty
 	while G.V:
-		v = next(iter(G.V)) # use this to avoid changing G.V while inside a for loop over G.V
+		v = max(G.V, key = G.degree) # use this to avoid changing G.V while inside a for loop over G.V
+		if G.degree(v) == 0:
+			break
 		G.remove_vertex(v)
 		C.add(v)
 	return C 
@@ -137,26 +148,28 @@ def greedy(G):
 # Returns a 2-approximation of the the minimal vertex cover
 # Correct behavior: while there are any **edges**, selects an arbitrary edge (u,v), adds both u and v to the cover and removes both u and v from the graph
 # Method stub incorrect behavior: adds all vertices to the cover and removes it from the graph 
-def matching(G):
+def matching(G:graph):
 	C = set() # Add nodes of maximum degree here
-	while G.V:
-		v = next(iter(G.V)) # use this to avoid changing G.V while inside a for loop over G.V
-		G.remove_vertex(v)
+	while G.count_edges() > 0:
+		u, v = G.get_edge()
+		C.add(u)
 		C.add(v)
+		G.remove_vertex(u)
+		G.remove_vertex(v)
 	return C
 
 def main():
 	filename = sys.argv[1]
 	mode = sys.argv[2].lower()
 	G = read_file(filename)
-	G.print_graph() # Make sure you comment out or delete this line for the final submission!ß		
+	G.print_graph() # Make sure you comment out or delete this line for the final submission!
 	if mode == "bruteforce" or mode == "1":
 		print_cover(bruteforce(G))
 	elif mode == "greedy" or mode == "2":
 		print_cover(greedy(G))
 	elif mode == "matching" or mode == "3":
 		print_cover(matching(G))
-	else :
+	else:
 		raise ValueError("Mode should be bruteforce, greedy or matching (or 1, 2, 3 respectively)")
 
 if __name__ == '__main__':
