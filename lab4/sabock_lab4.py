@@ -136,10 +136,8 @@ def is_vertex_cover(G, subset):
 def greedy(G: graph):	
 	C = set() # Add nodes of maximum degree here
 	# check if there are any edges for while loop. remove_vertex doesn't remove edge, but removes the vertices in it. It will be {} when empty
-	while G.V:
+	while G.count_edges() > 0:
 		v = max(G.V, key = G.degree) # use this to avoid changing G.V while inside a for loop over G.V
-		if G.degree(v) == 0:
-			break
 		G.remove_vertex(v)
 		C.add(v)
 	return C 
@@ -162,7 +160,6 @@ def main():
 	filename = sys.argv[1]
 	mode = sys.argv[2].lower()
 	G = read_file(filename)
-	G.print_graph() # Make sure you comment out or delete this line for the final submission!
 	if mode == "bruteforce" or mode == "1":
 		print_cover(bruteforce(G))
 	elif mode == "greedy" or mode == "2":
